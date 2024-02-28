@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(uuid())
+  name     String
+  bookings Booking[] // Usuário terá vários agendamentos
+}
+
+model Barbershop {
+  id       String    @id @default(uuid()) // Primimary Key 
+  name     String
+  address  String
+  imageUrl String
+  services Service[] // Barbearia terá vários serviços
+  bookings Booking[] // Barbearia terá vários agendamentos
+}
+
+model Service {
+  id          String     @id @default(uuid())
+  name        String
+  price       Decimal    @db.Decimal(10, 2)
+  barbershoId String // Foreingn Key (chave estrangeira)
+  barbershop  Barbershop @relation(fields: [barbershoId], references: [id]) // Relacionamento entre Barbearia e Serviço
+  description String
+  bookings    Booking[] // Um serviço irá pertencer a uma barbearia
+}
+
+model Booking {
+  id           String     @id @default(uuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id]) // Um agendamento irá pertencer a um agendamento
+  serviceId    String
+  service      Service    @relation(fields: [serviceId], references: [id]) // Um agendamento irá pertencer a um serviço
+  barbershopId String
+  barbershop   Barbershop @relation(fields: [barbershopId], references: [id]) // Um agendamento irá pertencer a uma barbearia
+  date         DateTime
+  status       String
+}
