@@ -121,6 +121,7 @@ async function seedDatabase() {
               },
             },
           },
+          imageUrl: service.imageUrl,
         });
       }
 
