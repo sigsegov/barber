@@ -29,8 +29,8 @@ model Service {
   barbershoId String // Foreingn Key (chave estrangeira)
   barbershop  Barbershop @relation(fields: [barbershoId], references: [id]) // Relacionamento entre Barbearia e Serviço
   description String
-  imageUrl String
   bookings    Booking[] // Um serviço irá pertencer a uma barbearia
+  imageUrl String
 }
 
 model Booking {
